@@ -17,12 +17,6 @@
                 <div>@film.Description</div>
                 <div class="my-3">Duration: @film.Duration minutes</div>
                 <div class="my-3">Viewed by: @film.VisualCount Users</div>
-                @if(film.MediaInfo.Generes != null) {
-                    @foreach (Genre genre in film.MediaInfo.Generes)
-                    {
-                        <div>genre.Name</div>
-                    }
-                }
             </div>
         </div>
     }
