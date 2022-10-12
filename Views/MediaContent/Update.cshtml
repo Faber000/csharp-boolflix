@@ -7,10 +7,10 @@
 <div class="container">
 
     <div class="d-flex align-items-center">
-        <h1 class="text-center mb-4">You're creating a @ViewData["Type"]</h1>
+        <h1 class="text-center mb-4">You're creating a new @ViewData["Type"]</h1>
     </div>
 
-    <form asp-controller="MediaContent" asp-action="Create" method="post">  
+    <form asp-controller="MediaContent" asp-action="Update" method="post" asp-route-id ="@ViewData["Id"]">  
         @Html.AntiForgeryToken()
 
         <div class="mb-4 my-2">

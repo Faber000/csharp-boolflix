@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using System.Linq.Expressions;
+using System.Linq.Expressions; 
 
 namespace csharp_boolflix.Controllers
 {
@@ -29,9 +29,7 @@ namespace csharp_boolflix.Controllers
 
                 filmSerie.Films = context.Films.Include("MediaInfo").ToList();
                 filmSerie.TvSeries = context.TvSeries.Include("MediaInfo").ToList();
-                filmSerie.Genres = context.Genres.ToList();
-                filmSerie.Actors = context.Actors.ToList();
-
+       
                 return View("Index", filmSerie);
             }
         }
@@ -108,6 +106,87 @@ namespace csharp_boolflix.Controllers
                     return RedirectToAction("Index");
                 }
                 
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Update(int id, string type)
+        {
+            using (BoolflixDbContext context = new BoolflixDbContext())
+            {
+
+                FilmSerieToInsert filmSerie = new FilmSerieToInsert();
+
+                if(type == "Film")
+                {
+                    Film film = context.Films.Include("MediaInfo").
+                    Where(film => film.Id == id).FirstOrDefault();
+
+                    filmSerie.Film = film;
+
+                }
+                else
+                {
+                    TVSeries serie = context.TvSeries.Include("MediaInfo").
+                    Where(serie => serie.Id == id).FirstOrDefault();
+
+                    filmSerie.TvSerie = serie;
+                }
+                
+                filmSerie.Genres = context.Genres.ToList();
+
+                ViewData["Type"] = type;
+                ViewData["Id"] = id;
+
+                return View("Update", filmSerie);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Update(int id, FilmSerieToInsert formData)
+        {
+            using (BoolflixDbContext context = new BoolflixDbContext())
+            {
+                if (formData.Film != null)
+                {
+                    Film film = context.Films.Where(film => film.Id == id).Include("MediaInfo").FirstOrDefault();
+
+                    film.Title = formData.Film.Title;
+                    film.Description = formData.Film.Description;
+                    film.Duration = formData.Film.Duration;
+                    film.MediaInfo.Year = formData.Film.MediaInfo.Year;
+
+                    if (formData.SelectedGenres != null)
+                    {
+                        film.MediaInfo.Generes = context.Genres.Where(genre => formData.SelectedGenres.Contains(genre.Id)).ToList<Genre>();
+                    }
+
+                    context.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
+
+                else
+                {
+
+                    TVSeries serie = context.TvSeries.Where(serie=> serie.Id == id).Include("MediaInfo").FirstOrDefault();
+
+                    serie.Title = formData.TvSerie.Title;
+                    serie.Description = formData.TvSerie.Description;
+                    serie.Duration = formData.TvSerie.Duration;
+                    serie.MediaInfo.Year = formData.TvSerie.MediaInfo.Year;
+
+                    if(formData.SelectedGenres != null)
+                    {
+                        serie.MediaInfo.Generes = context.Genres.Where(genre => formData.SelectedGenres.Contains(genre.Id)).ToList<Genre>();
+                    }
+                    
+
+                    context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+
             }
         }
 
