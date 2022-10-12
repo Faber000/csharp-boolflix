@@ -1,0 +1,96 @@
+﻿@model FilmSerieToInsert
+
+@{
+    string type = @ViewData["Type"].ToString();
+}
+
+<div class="container">
+
+    <div class="d-flex align-items-center">
+        <h1 class="text-center mb-4">You're creating a new @ViewData["Type"]</h1>
+    </div>
+
+    <form asp-controller="MediaContent" asp-action="Create" method="post">  
+        @Html.AntiForgeryToken()
+
+        <div class="mb-4 my-2">
+            <h3>Name: </h3>
+
+            @if(type == "Film") {
+                <input asp-for="Film.Title" />
+                <span asp-validation-for="Film.Title"></span>
+            }
+            else
+            {
+                <input asp-for="TvSerie.Title" />
+                <span asp-validation-for="TvSerie.Title"></span>
+            }        
+        </div>
+
+        <div class="mb-4 my-2">
+            <h3>Plot: </h3>
+
+            @if(type == "Film") {
+                <input asp-for="Film.Description" />
+                <span asp-validation-for="Film.Description"></span>
+            }
+            else
+            {
+                <input asp-for="TvSerie.Description" />
+                <span asp-validation-for="TvSerie.Description"></span>
+            }        
+        </div>
+
+        <div class="mb-4 my-2">
+            <h3>Duration: </h3>
+
+            @if(type == "Film") {
+                <input asp-for="Film.Duration" />
+                <span asp-validation-for="Film.Duration"></span>
+            }
+            else
+            {
+                <input asp-for="TvSerie.Duration" />
+                <span asp-validation-for="TvSerie.Duration"></span>
+            }        
+        </div>
+
+        <div class="mb-4 my-2">
+            <h3>Year: </h3>
+
+            @if(type == "Film") {
+                <input asp-for="Film.MediaInfo.Year" />
+                <span asp-validation-for="Film.MediaInfo.Year"></span>
+            }
+            else
+            {
+                <input asp-for="TvSerie.MediaInfo.Year" />
+                <span asp-validation-for="TvSerie.MediaInfo.Year"></span>
+            }        
+        </div>
+
+        @if (@type == "Serie")
+        {
+            <div class="mb-4">
+                <h3>Seasons: </h3>
+                <input asp-for="TvSerie.SeasonCount"/>
+                <span asp-validation-for="TvSerie.SeasonCount"></span>
+                    
+            </div>
+        }
+        <div class="mb-4">
+            <h3>Genres: </h3>
+            <select multiple="multiple"
+                asp-for="SelectedGenres">
+                @foreach (Genre genre in Model.Genres)
+                {
+                    <option value="@genre.Id">@genre.Name</option>
+                }
+            </select>
+        <div>
+
+        <input class="btn submit-button" type="submit" value="Salva"/>
+    </form>
+</div>
+Footer
+© 2022 GitHub, Inc.

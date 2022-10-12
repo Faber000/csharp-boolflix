@@ -1,0 +1,51 @@
+﻿@model FilmSerie
+
+<a href="@Url.Action("Create","MediaContent", new { Type = "Film"})"><button class="create-button">Insert Movie</button></a>
+<a href="@Url.Action("Create","MediaContent", new { Type = "Serie"})"><button class="create-button">Insert Tv Serie</button></a>
+<h3 class="text-center my-4">Movies</h3>
+<div class="d-flex justify-content-center align-items-center flex-wrap">
+   
+    @foreach (Film film in Model.Films)
+    {
+        <div class="card-content my-3">
+            <div class="card-content-header d-flex justify-content-between align-items-center">
+                <div class="mx-2">@film.Title</div>
+                <div class="mx-2">@film.MediaInfo.Year</div>
+            </div>
+            <div class="card-content-body p-2">
+                <div>Plot: </div>
+                <div>@film.Description</div>
+                <div class="my-3">Duration: @film.Duration minutes</div>
+                <div class="my-3">Viewed by: @film.VisualCount Users</div>
+                @if(film.MediaInfo.Generes != null) {
+                    @foreach (Genre genre in film.MediaInfo.Generes)
+                    {
+                        <div>genre.Name</div>
+                    }
+                }
+            </div>
+        </div>
+    }
+</div>
+<h3 class="text-center my-4">Series</h3>
+<div class="d-flex justify-content-center align-items-center">
+    
+    @foreach (TVSeries serie in Model.TvSeries)
+    {
+        <div class="card-content">
+            <div class="card-content-header d-flex justify-content-between align-items-center">
+                <div class="mx-2">@serie.Title</div>
+                <div class="mx-2">@serie.MediaInfo.Year</div>
+            </div>
+            <div class="card-content-body p-2">
+                <div>Plot: </div>
+                <div>@serie.Description</div>
+                <div class="my-3">Duration: @serie.Duration minutes</div>
+                <div class="my-3">Viewed by: @serie.VisualCount Users</div>
+                <div class="my-3">@serie.SeasonCount Seasons</div>
+            </div>
+        </div>
+    }
+</div>
+
+   
