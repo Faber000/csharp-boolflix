@@ -190,6 +190,33 @@ namespace csharp_boolflix.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            using (BoolflixDbContext context = new BoolflixDbContext())
+            {
+                MediaInfo mediaInfo = context.MediaInfos.Where(media => media.Id == id).FirstOrDefault();
+
+                if(mediaInfo.FilmId != null)
+                {
+                    Film film = context.Films.Where(film => film.Id == mediaInfo.FilmId).FirstOrDefault();
+                    context.Films.Remove(film);
+                }
+                else if(mediaInfo.TVSeriesId != null)
+                {
+                    TVSeries serie = context.TvSeries.Where(serie => serie.Id == mediaInfo.TVSeriesId).FirstOrDefault();
+                    context.TvSeries.Remove(serie);
+                }
+               
+                context.MediaInfos.Remove(mediaInfo);
+
+                context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+        }
+
         public IActionResult Privacy()
         {
             return View();
