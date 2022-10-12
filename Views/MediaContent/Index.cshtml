@@ -17,11 +17,13 @@
                 <div>@film.Description</div>
                 <div class="my-3">Duration: @film.Duration minutes</div>
                 <div class="my-3">Viewed by: @film.VisualCount Users</div>
-                <a href="@Url.Action("Update","MediaContent", new {id = @film.Id ,type = "Film"})"><button class="update-button">Modify</button></a>
-                <form asp-controller="MediaContent" asp-action="Delete" asp-route-id="@film.MediaInfo.Id" method="post">
-                    @Html.AntiForgeryToken()
-                    <button type="submit">Elimina</button>
-                </form>
+                <div class="d-flex justify-content-center">
+                    <a class="mx-2" href="@Url.Action("Update","MediaContent", new {id = @film.Id ,type = "Film"})"><button class="update-button">Modify</button></a>
+                    <form asp-controller="MediaContent" class="mx-2" asp-action="Delete" asp-route-id="@film.MediaInfo.Id" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit">Elimina</button>
+                    </form>
+                </div>
             </div>
         </div>
     }
@@ -42,11 +44,13 @@
                 <div class="my-3">Duration: @serie.Duration minutes</div>
                 <div class="my-3">Viewed by: @serie.VisualCount Users</div>
                 <div class="my-3">@serie.SeasonCount Seasons</div>
-                <a href="@Url.Action("Update","MediaContent", new {id = @serie.Id, type = "Serie"})"><button class="update-button">Modify</button></a>
-                <form asp-controller="MediaContent" asp-action="Delete" asp-route-id="@serie.MediaInfo.Id" method="post">
-                    @Html.AntiForgeryToken()
-                    <button type="submit">Elimina</button>
-                </form>
+                <div class="d-flex justify-content-center">
+                    <a class="mx-2" href="@Url.Action("Update","MediaContent", new {id = @serie.Id, type = "Serie"})"><button class="update-button">Modify</button></a>
+                    <form asp-controller="MediaContent" class="mx-2" asp-action="Delete" asp-route-id="@serie.MediaInfo.Id" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit">Elimina</button>
+                    </form>
+                </div>
             </div>
         </div>
     }
